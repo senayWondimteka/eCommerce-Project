@@ -44,6 +44,10 @@
       list-style-type: none;
       margin-right: 1.5rem;
 
+      &:last-child {
+        margin-right: 0;
+      }
+
       a {
         font-size: 1.8rem;
         line-height: 1;

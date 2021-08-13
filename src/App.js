@@ -31,7 +31,7 @@ class App extends Component  {
   componentDidMount() {
     this.authListener = auth.onAuthStateChanged( async userAuth => {
       if(userAuth) {
-        const userRef = await handleUserProfile(userAuth);
+        const userRef = await handleUserProfile({userAuth});
         userRef.onSnapshot(snapshot => {
           this.setState({
             currentUser: {
@@ -40,11 +40,11 @@ class App extends Component  {
             }
           })
         })
-      }
-        this.setState({
-          ...initialState
-        })
-      
+    }
+
+      this.setState({
+        ...initialState
+      });
     });
   }
 
@@ -63,27 +63,25 @@ class App extends Component  {
             <HomepageLayout currentUser={currentUser}>
               <Homepage />
             </HomepageLayout>
-          )} />
-          <Route path='/registration' render={
-            () => (
-              <MainLayout currentUser={currentUser}>
-                <Registration />
-              </MainLayout>
-            )
-          }/>
-          <Route path='/login' render={
-            currentUser ? <Redirect to='/' /> : (
-            () => (
+          )} 
+          />
+          <Route path='/registration' render={() => currentUser ? <Redirect to='/' /> : (
+          <MainLayout currentUser={currentUser}>
+            <Registration />
+          </MainLayout>
+          )} 
+          />
+          <Route path='/login'
+          render={() => currentUser ? <Redirect to='/' /> : (
               <MainLayout currentUser={currentUser}>
                 <Login />
               </MainLayout>
-            )
-            )
-          }/>
+            )} 
+          />
         </Switch>
     </div>
   );
-  }
+}
 }
 
 export default App;

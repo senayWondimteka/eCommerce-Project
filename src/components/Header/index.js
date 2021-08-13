@@ -23,7 +23,7 @@ const Header = props => {
           {currentUser && (
             <ul>
               <li>
-                <span onClick={() => auth.S}>
+                <span onClick={() => auth.signOut()}>
                   LogOut
                 </span>
               </li>
