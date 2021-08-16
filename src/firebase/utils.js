@@ -3,10 +3,10 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import { firebaseConfig } from './config';
 
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-export const auth = app.auth();
-export const firestore = app.firestore();
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
 
 export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 GoogleProvider.setCustomParameters({ prompt: 'select_account' });
@@ -14,15 +14,24 @@ GoogleProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () =>  auth.signInWithPopup(GoogleProvider);
 
 
-export const handleUserProfile = async ({ userAuth, displayName}) => {
-  
+export const handleUserProfile = async ({ userAuth,  displayName}) => {
+
+
   if (!userAuth) 
   {
     return;
   } 
-  const { user } = userAuth;
 
-  const { uid, email} = user;
+  //const user = userAuth
+
+  //if(register) {
+    //const { user } = userAuth;
+  //} 
+  //
+  const nameDis = displayName;
+  const { uid, email} = userAuth;
+ 
+
 
   const userRef = firestore.doc(`users/${uid}`);
   const snapshot = await userRef.get();

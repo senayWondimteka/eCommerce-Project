@@ -10,6 +10,7 @@ import './default.scss'
 import MainLayout from './Layout/MainLayout';
 import HomepageLayout from './Layout/HomepageLayout';
 import Login from './pages/Login';
+import Recovery from './pages/Recovery'
 
 const initialState = {
   currentUser: null
@@ -31,6 +32,8 @@ class App extends Component  {
   componentDidMount() {
     this.authListener = auth.onAuthStateChanged( async userAuth => {
       if(userAuth) {
+        
+        console.log(userAuth.uid, userAuth.email);
         const userRef = await handleUserProfile({userAuth});
         userRef.onSnapshot(snapshot => {
           this.setState({
@@ -44,6 +47,7 @@ class App extends Component  {
 
       this.setState({
         ...initialState
+    
       });
     });
   }
@@ -78,6 +82,11 @@ class App extends Component  {
               </MainLayout>
             )} 
           />
+          <Route path='/recovery' render= { () => (
+            <MainLayout>
+              <Recovery />
+            </MainLayout>
+          )} />
         </Switch>
     </div>
   );
