@@ -28,11 +28,12 @@ export const handleUserProfile = async ({ userAuth,  displayName}) => {
     //const { user } = userAuth;
   //} 
   //
-  const nameDis = displayName;
+  //const nameDis = displayName;
   const { uid, email} = userAuth;
  
 
-
+  console.log(displayName
+    , "display Name in utils");
   const userRef = firestore.doc(`users/${uid}`);
   const snapshot = await userRef.get();
 
@@ -40,7 +41,7 @@ export const handleUserProfile = async ({ userAuth,  displayName}) => {
     //const { email } = userAuth;
     const timestamp = new Date();
     const userRoles = ['user'];
-    
+    const hi = 'hi';
     try {
       await userRef.set({
             displayName,

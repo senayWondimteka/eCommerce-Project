@@ -33,7 +33,7 @@ class EmailPassword extends Component {
     })
   }
 
-  handleSubmit = async(e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     try {
@@ -43,11 +43,15 @@ class EmailPassword extends Component {
       const config = {
         url:'http://localhost:3000/login'
       };
-      await auth.sendPasswordResetEmail(email, config).then(() => {
+      auth.sendPasswordResetEmail(email, config).then((res) => {
         
-        this.props.histroy.push('/login');
+        
+        console.log("hi");
+        this.props.history.push('/login');
       })
-      .catch(( ) => {
+      .catch(( rrr ) => {
+
+        console.log(rrr);
         const err = ['Email not found. Please try again'];
         this.setState({
           errors: err
@@ -101,4 +105,4 @@ class EmailPassword extends Component {
   }
 }
 
-export default withRouter(EmailPassword);
+export default EmailPassword;

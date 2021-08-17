@@ -58,7 +58,11 @@ class SignUp extends Component {
 
       const {  user }  = userAuth;
       //console.log(userAuth.user, {displayName});
-      await handleUserProfile(user ,  {displayName} );
+      const  nameSent  = {
+        userAuth: user,
+        displayName: displayName
+      }
+      await handleUserProfile(nameSent);
 
       
       //if(!userRef) return 
