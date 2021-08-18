@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import { auth } from "../../firebase/utils";
 import AuthWrapper from "../AuthWrapper";
 import Button from "../forms/Button";
@@ -7,55 +7,27 @@ import FormInput from "../forms/FormInput";
 
 import './styles.scss';
 
-const initialState = {
-  email: '',
-  errors: []
-};
+const EmailPassword = props => {
+  
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState('')
 
-class EmailPassword extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = {
-      ...initialState
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-
-  handleChange(e) {
-    const {name, value} = e.target;
-
-    this.setState({
-      [name]: value
-
-    })
-  }
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     try {
 
-      const { email } = this.state;
-
       const config = {
         url:'http://localhost:3000/login'
       };
-      auth.sendPasswordResetEmail(email, config).then((res) => {
-        
-        
-        console.log("hi");
-        this.props.history.push('/login');
+      auth.sendPasswordResetEmail(email, config).then(() => {   
+        props.history.push('/login');
       })
       .catch(( rrr ) => {
 
         console.log(rrr);
         const err = ['Email not found. Please try again'];
-        this.setState({
-          errors: err
-        })
+        setErrors(err);
       });
 
     }catch(err) {
@@ -63,9 +35,7 @@ class EmailPassword extends Component {
     }
 
   }
-  render() {
 
-    const { email, errors } = this.state;
 
     const configAuthWrapper = {
       headLine: "Email Password"
@@ -84,14 +54,14 @@ class EmailPassword extends Component {
           </ul>
         )}
         <div className='formWrap'>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={handleSubmit}>
 
             <FormInput 
               type='email'
               name='email'
               value={email}
               placehoder='Email'
-              onChange={this.handleChange}/>
+              onChange={ e => setEmail(e.target.value)}/>
 
               <Button type='submit'>
                 Emaill Password
@@ -102,7 +72,7 @@ class EmailPassword extends Component {
         
       </AuthWrapper>
     )
-  }
+  
 }
 
-export default EmailPassword;
+export default withRouter(EmailPassword);

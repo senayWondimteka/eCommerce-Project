@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route , Redirect } from 'react-router-dom';
 
 import {auth, handleUserProfile} from './firebase/utils';
@@ -13,40 +13,34 @@ import Login from './pages/Login';
 import Recovery from './pages/Recovery'
 import { setCurrentUser } from './redux/User/user.actions';
 import { connect } from 'react-redux';
+import Dashboard from './pages/Dashboard';
 
-class App extends Component  {
+import WithAuth from './HOC/withAuth';
 
-  authListener = null;
+const App = props => {
 
-  componentDidMount() {
+  const { setCurrentUser, currentUser } = props;
 
-    const { setCurrentUser } = this.props;
-    this.authListener = auth.onAuthStateChanged( async userAuth => {
+  useEffect(() => {
+    const authListener = auth.onAuthStateChanged( async userAuth => {
       if(userAuth) {
-        
-        //console.log(userAuth.uid, userAuth.email);
-        
         const userRef = await handleUserProfile({userAuth});
         userRef.onSnapshot(snapshot => {
           setCurrentUser({
             id: snapshot.id,
             ...snapshot.data()
-          })
+          });
         })
       }
-
       setCurrentUser(userAuth);
     });
-  }
 
-  componentWillUnmount() {
-    this.authListener();
-  }
+    return () => {
+      authListener();
+    }
+  }, []);
 
-  render() {
-  
-  const {currentUser} = this.props;
-  
+ 
   return (
     <div className="App">
       <Switch>
@@ -74,11 +68,19 @@ class App extends Component  {
               <Recovery />
             </MainLayout>
           )} />
+
+          <Route path='/dashboard' render= { () => (
+            <WithAuth>
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </WithAuth>
+          )} />
         </Switch>
     </div>
   );
 }
-}
+
 
 const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser
