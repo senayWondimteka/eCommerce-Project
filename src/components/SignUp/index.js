@@ -7,7 +7,7 @@ import AuthWrapper from '../AuthWrapper'
 
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import  { signUpUser }  from '../../redux/User/user.actions';
+import  { resetAllAuthForms, signUpUser }  from '../../redux/User/user.actions';
 
 const mapState = ({ user }) => ({
   signUpSuccess: user.signUpSuccess,
@@ -26,7 +26,8 @@ const SignUp = props =>  {
 
   useEffect(() => {
     if(signUpSuccess){
-      resetForm();
+      reset();
+      dispatch(resetAllAuthForms());
       props.history.push('/');
     }
 
@@ -38,7 +39,7 @@ const SignUp = props =>  {
     }
   }, [signUpError])
 
-  const resetForm = () => {
+  const reset = () => {
     setDisplayName();
     setEmail();
     setPassword();

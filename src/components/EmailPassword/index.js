@@ -5,7 +5,7 @@ import './styles.scss';
 import AuthWrapper from "../AuthWrapper";
 import Button from "../forms/Button";
 import FormInput from "../forms/FormInput";
-import { resetPassword } from "../../redux/User/user.actions";
+import { resetAllAuthForms, resetPassword } from "../../redux/User/user.actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const mapState = ({ user }) => ({
@@ -22,6 +22,7 @@ const EmailPassword = props => {
 
   useEffect(( ) => {
     if(resetPasswordSuccess){
+      dispatch(resetAllAuthForms());
       props.history.push('/')
     }
 
@@ -33,6 +34,7 @@ const EmailPassword = props => {
     }
 
   }, [resetPasswordError])
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(resetPassword({ email }));
