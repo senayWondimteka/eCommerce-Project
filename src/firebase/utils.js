@@ -12,7 +12,7 @@ export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 GoogleProvider.setCustomParameters({ prompt: 'select_account' });
 
 
-export const handleUserProfile = async ({ userAuth,  displayName}) => {
+export const handleUserProfile = async ({ userAuth,  displayName }) => {
 
 
   if (!userAuth) 
@@ -20,21 +20,12 @@ export const handleUserProfile = async ({ userAuth,  displayName}) => {
     return;
   } 
 
-  //const user = userAuth
-
-  //if(register) {
-    //const { user } = userAuth;
-  //} 
-  //
-  //const nameDis = displayName;
   const { uid, email} = userAuth;
  
-  //console.log(displayNam , "display Name in utils");
   const userRef = firestore.doc(`users/${uid}`);
   const snapshot = await userRef.get();
 
   if(!snapshot.exists) {
-    //const { email } = userAuth;
     const timestamp = new Date();
     const userRoles = ['user'];
     
@@ -47,7 +38,7 @@ export const handleUserProfile = async ({ userAuth,  displayName}) => {
             //...additionalData
       })
     } catch(err) {
-      console.log(err, 'unable to set');
+      console.log(err, 'unable to set from Handle User Profile function from firbase utils files');
     }
   }
  

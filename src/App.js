@@ -18,6 +18,9 @@ import './default.scss'
 
 // hoc 
 import WithAuth from './HOC/withAuth';
+import Admin from './pages/Admin';
+import WithAdminAuth from './HOC/withAdminAuth';
+import AdminToolbar from './components/AdminToolbar';
 
 const App = props => {
   const dispatch = useDispatch();
@@ -45,6 +48,7 @@ const App = props => {
  
   return (
     <div className="App">
+      <AdminToolbar />
       <Switch>
           <Route exact path='/' render={() => (
             <HomepageLayout >
@@ -77,6 +81,15 @@ const App = props => {
                 <Dashboard />
               </MainLayout>
             </WithAuth>
+          )} />
+
+          <Route path='/admin' render= { () => (
+            <WithAdminAuth>
+              <MainLayout>
+                <Admin />
+              </MainLayout>
+            </WithAdminAuth>
+            
           )} />
         </Switch>
     </div>
